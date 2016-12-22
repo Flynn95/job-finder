@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/about', function () {
-    return view('about');
-});
+Route::get('/list', 'PostController@list');
+
+Route::get('/show/{post}', 'PostController@show');
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');

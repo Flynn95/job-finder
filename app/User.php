@@ -23,4 +23,22 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * An user has many posts
+     * @return Eloquent relationship
+     */
+    public function posts()
+    {
+        return $this->hasMany('App\Post');
+    }
+
+    /**
+     * An user has many comments
+     * @return Eloquent relationship
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment', 'creator_id');
+    }
 }
