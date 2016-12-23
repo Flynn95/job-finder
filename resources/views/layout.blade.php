@@ -11,9 +11,14 @@
 </head>
 
 <body>
+	@yield('navigator')
+
 	@yield('content')
+
+	@yield('footer')
 
 	<script src="/js/jquery.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
+	@yield('afterscript')
 </body>
 </html>

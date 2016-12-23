@@ -10,6 +10,9 @@ class Comment extends Model
         'content', 
     ];
 
+    // Carbon instance fields
+    protected $dates = ['created_at'];
+
     /**
      * A comment belongs to one post
      * @return Eloquent relationship

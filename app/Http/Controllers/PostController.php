@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use App\Post;
+use App\Category;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -27,5 +29,71 @@ class PostController extends Controller
     {
     	$post->load('user', 'comments.user');
     	return view('post.show', compact('post'));
+    }
+
+    /**
+     * Send Categories list to view
+     * @return Laravel view 
+     */
+    public function viewCreatePage()
+    {
+    	$categories = Category::all();
+    	return view('post.create', compact('categories'));
+    }
+
+    /**
+     * Store post onto database
+     * @param  Request $request 
+     * @return Redirect           Redirect with session message
+     */
+    public function store(Request $request)
+    {
+    	$this->validate($request, [
+    		'title' => 'required|min:10',
+    		'content' => 'required|min:30'
+    	]);
+
+    	$post = new Post($request->all());
+    	$post->user_id = 1;
+    	$post->save();
+
+    	Session::flash('message', 'Your post has published successfully.');
+    	return back();
+    }
+
+    /**
+     * Send a view for editing post
+     * @param  Post   $post 
+     * @return Laravel view
+     */
+    public function edit(Post $post)
+    {
+    	$categories = Category::all();
+    	return view('post.edit', compact('post', 'categories'));
+    }
+
+    /**
+     * Update post
+     * @param  Request $request
+     * @param  Post    $post    
+     * @return Redirect
+     */
+    public function update(Request $request, Post $post)
+    {
+    	$post->update($request->all());
+
+    	Session::flash('message', 'Your post has been updated successfully.');
+    	return back();
+    }
+
+    /**
+     * Delete post
+     * @param  Post     $post 
+     * @return Redirect       
+     */
+    public function delete(Post $post)
+    {
+    	Post::destroy($post->id);
+    	return redirect('/posts');
     }
 }

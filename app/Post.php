@@ -10,6 +10,9 @@ class Post extends Model
         'title', 'content', 'category_id',
     ];
 
+    // Carbon instance fields
+    protected $dates = ['created_at', 'updated_at'];
+
     /**
      * A post has many comments
      * @return Eloquent relationship
