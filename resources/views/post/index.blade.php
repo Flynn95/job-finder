@@ -8,6 +8,11 @@
 	<div class="container">
 		<h1>All available jobs</h1>
 		<div class="row">
+
+			@if(\Session::has('message'))
+				<div class="alert alert-success">{{ \Session::get('message') }}</div>
+			@endif
+
 			<table class="table table-hover">
 				<tbody>
 					@foreach($posts as $post)

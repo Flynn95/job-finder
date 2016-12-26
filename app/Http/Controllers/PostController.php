@@ -94,6 +94,23 @@ class PostController extends Controller
     public function delete(Post $post)
     {
     	Post::destroy($post->id);
+        Session::flash('message', 'Post deleted successfully.');
     	return redirect('/posts');
+    }
+    public function deleteFromManage(Post $post)
+    {
+        Post::destroy($post->id);
+        Session::flash('message', 'Post deleted successfully.');
+        return back();
+    }
+
+    /**
+     * Show posts manage page
+     * @return Laravel view 
+     */
+    public function viewManagePage()
+    {
+        $posts = Post::all()->load('user', 'category');
+        return view('post.manage', compact('posts'));
     }
 }

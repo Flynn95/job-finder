@@ -19,15 +19,18 @@ Route::get('posts', 'PostController@list');
 
 Route::get('show/{post}', 'PostController@show');
 Route::get('post/create', 'PostController@viewCreatePage');
+Route::get('post/manage', 'PostController@viewManagePage');
 Route::post('post/create/new', 'PostController@store');
-Route::get('post/{post}/edit', 'PostController@edit');
-Route::patch('post/{post}/update', 'PostController@update');
+Route::get('post/manage/{post}/edit', 'PostController@edit');
+Route::patch('post/manage/{post}/update', 'PostController@update');
+Route::post('post/manage/{post}/delete', 'PostController@deleteFromManage');
 Route::post('post/{post}/delete', 'PostController@delete');
 
 Route::post('comment/{post}/new', 'CommentController@store');
 
 Route::get('category/manage', 'CategoryController@viewManagePage');
-Route::post('category/new', 'CategoryController@store');
+Route::post('category/manage/new', 'CategoryController@store');
+Route::post('category/manage/{category}/delete', 'CategoryController@delete');
 Route::get('categories', 'CategoryController@list');
 Route::get('categories/{category}', 'CategoryController@postsListing');
 

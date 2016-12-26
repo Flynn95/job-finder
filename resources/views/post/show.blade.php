@@ -39,7 +39,7 @@
 
 		<form method="POST" action="/comment/{{ $post->id }}/new">
 			<div class="form-group">
-				<textarea class="form-control" name="content" style="min-height: 80px; "></textarea>
+				<textarea class="form-control" name="content" style="min-height: 80px; ">{{ old('content') }}</textarea>
 			</div>
 			<div class="form-group">
 				<button type="submit" class="form-control btn btn-primary">Post your comment</button>

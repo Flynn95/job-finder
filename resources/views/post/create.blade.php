@@ -31,7 +31,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="title">Title</label>
 				<div class="col-sm-10">
-					<input type="text" name="title" class="form-control" size="150" autofocus>
+					<input type="text" name="title" class="form-control" size="150" value="{{ old('title') }}" autofocus>
 				</div>
 			</div>
 			<div class="form-group">

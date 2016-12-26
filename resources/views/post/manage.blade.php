@@ -1,13 +1,13 @@
 @extends('layout')
 
 @section('header')
-	<title>Create a new category</title>
+	<title>Post manage - Job-Finder.net</title>
 @endsection
 
 @section('content')
 	<div class="container">
 		<h1>
-			Create a new category
+			Post manage
 		</h1>
 		<h4><small><a href="/">&larr; back to homepage</a></small></h4>
 		<hr>
@@ -20,10 +20,10 @@
 			<div class="alert alert-warning">{{ \Session::get('err-message') }}</div>
 		@endif
 
-		<h3>List of all current category:</h3>
+		<h3>List of all posts:</h3>
 		<ul class="list-group">
-		    @foreach($categories as $category)
-		    	<li class="list-group-item">{{ $category->name }} <a href="#myModal" data-toggle="modal" data-cat-id="{{ $category->id }}" data-cat-name="{{ $category->name }}" class="pull-right">Delete</a></li>
+		    @foreach($posts as $post)
+		    	<li class="list-group-item">{{ $post->title }} <p style="display: inline;" class="pull-right"><a href="/post/manage/{{ $post->id }}/edit">Edit</a> | <a href="#myModal" data-toggle="modal" data-post-id="{{ $post->id }}">Delete</a></p></li>
 		    @endforeach
 		</ul>
 
@@ -31,12 +31,12 @@
 			<div class="modal-dialog">
 			    <!-- Modal content-->
 			    <div class="modal-content">
-			    <form method="POST" action="category/manage/delete" name="modalForm">
+			    <form method="POST" action="post/manage/delete" name="modalForm">
 				    <div class="modal-header">
 				        <h4 class="modal-title">Confirmation</h4>
 				    </div>
 				    <div class="modal-body">
-				        <p name="catInfo"></p>
+				        <p name="postInfo"></p>
 				    </div>
 				    <div class="modal-footer">
 				        <button type="submit" class="btn btn-danger">Yes</button>
@@ -57,27 +57,15 @@
 				</ul>
 			</div>
 		@endif
-
-		<form method="POST" action="/category/create/new">
-			<div class="form-group">
-				<label for="name">Name</label>
-				<input type="text" name="name" class="form-control" size="150" autofocus>
-			</div>
-			<div class="form-group">
-					<button type="submit" class="form-control btn btn-primary">Submit</button>
-			</div>
-			{{ csrf_field() }}
-		</form>
 @endsection
 
 @section('afterscript')
 	<script>
 		$('#myModal').on('show.bs.modal', function(e) {
-	    	var catId = $(e.relatedTarget).data('cat-id');
-	    	var catName = $(e.relatedTarget).data('cat-name');
-	    	var info = 'Are you sure you want to delete the <strong>' + catName + '</strong> category?<br />All post under this category will be put into General category.';
-	    	$(e.currentTarget).find('p[name="catInfo"]').html(info);
-	    	$(e.currentTarget).find('form[name="modalForm"]').attr('action', '/category/manage/' + catId + '/delete');
+	    	var postId = $(e.relatedTarget).data('post-id');
+	    	var info = 'Are you sure you want to delete this post?';
+	    	$(e.currentTarget).find('p[name="postInfo"]').html(info);
+	    	$(e.currentTarget).find('form[name="modalForm"]').attr('action', '/post/manage/' + postId + '/delete');
 		});
 	</script>
 @endsection
