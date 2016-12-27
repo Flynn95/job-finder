@@ -43,8 +43,8 @@
                 <label class="control-label col-sm-2" for="role">Role</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="role">
-                            <option value="employer">Employer</option>
-                            <option value="employee">Employee</option>
+                            <option value="2">Employer</option>
+                            <option value="3">Employee</option>
                     </select>
                 </div>
             </div>

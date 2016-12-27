@@ -11,12 +11,13 @@
 		</h1>
 		<h4><small><a href="/categories">&larr; back to categories listing</a></small></h4>
 		<hr>
-		@if(count($category->posts) > 0)
+		@if(count($posts) > 0)
 			<div class="list-group">
-			    @foreach($category->posts as $post)
+			    @foreach($posts as $post)
 			    	<a href="/show/{{ $post->id }}" class="list-group-item">{{ $post->title }}</a>
 			    @endforeach
 			</div>
+			{{ $posts->render() }}
 		@else
 			<p>Nothing to show here.</p>
 		@endif

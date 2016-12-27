@@ -3,15 +3,33 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Post extends Model
 {
+    use SearchableTrait;
+
     protected $fillable = [
-        'title', 'content', 'category_id',
+        'title', 'content', 'category_id', 'location',
     ];
 
     // Carbon instance fields
     protected $dates = ['created_at', 'updated_at'];
+
+    protected $searchable = [
+        /**
+         * Columns and their priority in search results.
+         * Columns with higher values are more important.
+         * Columns with equal values have equal importance.
+         *
+         * @var array
+         */
+        'columns' => [
+            'title' => 10,
+            'location' => 5,
+            'content' => 1,
+        ]
+    ];
 
     /**
      * A post has many comments

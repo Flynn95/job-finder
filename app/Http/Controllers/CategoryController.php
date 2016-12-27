@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Session;
 use App\Category;
 use App\Http\Requests;
@@ -15,8 +16,8 @@ class CategoryController extends Controller
      */
     public function viewManagePage()
     {
-    	$categories = Category::all();
-    	return view('category.create', compact('categories'));
+    	$categories = Category::paginate(10);
+    	return view('admin.categoryManage', compact('categories'));
     }
 
     /**
@@ -53,8 +54,9 @@ class CategoryController extends Controller
      */
     public function postsListing(Category $category)
     {
-        $category->load('posts')->paginate(10);
-        return view('category.listPosts', compact('category'));
+        $posts = DB::table('posts')->where('category_id', $category->id)
+                                    ->paginate(10);
+        return view('category.listPosts', compact('category', 'posts'));
     }
 
     /**
@@ -79,5 +81,20 @@ class CategoryController extends Controller
             Session::flash('message', 'Category deleted successfully.');
             return back();
         }
+    }
+
+    /**
+     * Update category name
+     * @param  Request  $request  
+     * @param  Category $category 
+     * @return Redirect             
+     */
+    public function update(Request $request, Category $category)
+    {
+        $category->name = $request->input('catName');
+        $category->save();
+
+        Session::flash('message', 'Category updated successfully.');
+        return back();
     }
 }

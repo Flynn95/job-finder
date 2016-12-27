@@ -11,30 +11,104 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 Route::get('posts', 'PostController@list');
 
 Route::get('show/{post}', 'PostController@show');
-Route::get('post/create', 'PostController@viewCreatePage');
-Route::get('post/manage', 'PostController@viewManagePage');
-Route::post('post/create/new', 'PostController@store');
-Route::get('post/manage/{post}/edit', 'PostController@edit');
-Route::patch('post/manage/{post}/update', 'PostController@update');
-Route::post('post/manage/{post}/delete', 'PostController@deleteFromManage');
-Route::post('post/{post}/delete', 'PostController@delete');
+Route::get('user/{user}/allposts', 'PostController@viewAllUserPosts');
+Route::post('search', 'PostController@search');
 
-Route::post('comment/{post}/new', 'CommentController@store');
-
-Route::get('category/manage', 'CategoryController@viewManagePage');
-Route::post('category/manage/new', 'CategoryController@store');
-Route::post('category/manage/{category}/delete', 'CategoryController@delete');
 Route::get('categories', 'CategoryController@list');
 Route::get('categories/{category}', 'CategoryController@postsListing');
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', function () {
+	return view('home');
+});
+
+Route::group(['middleware' => ['auth']], function() {
+	Route::get('admin', [
+		'uses' => 'AdminController@index',
+		'middleware' => ['role:admin']
+		]);
+
+	Route::get('admin/category/manage', [
+		'uses' => 'CategoryController@viewManagePage',
+		'middleware' => ['role:admin']
+		]);
+	Route::post('admin/category/manage/new', [
+		'uses' => 'CategoryController@store',
+		'middleware' => ['role:admin']
+		]);
+	Route::post('admin/category/manage/{category}/delete', [
+		'uses' => 'CategoryController@delete',
+		'middleware' => ['role:admin']
+		]);
+	Route::post('admin/category/manage/{category}/update', [
+		'uses' => 'CategoryController@update',
+		'middleware' => ['role:admin']
+		]);
+
+	Route::get('admin/user/manage', [
+		'uses' => 'UserController@viewManagePage',
+		'middleware' => ['role:admin']
+		]);
+	Route::post('admin/user/manage/{user}/delete', [
+		'uses' => 'UserController@delete',
+		'middleware' => ['role:admin']
+		]);
+	Route::post('admin/user/manage/{user}/update', [
+		'uses' => 'UserController@update',
+		'middleware' => ['role:admin']
+		]);
+
+	Route::get('post/create', [
+		'uses' => 'PostController@viewCreatePage',
+		'middleware' => ['role:admin|employer']
+		]);
+	Route::post('post/create/new', [
+		'uses' => 'PostController@store',
+		'middleware' => ['role:admin|employer']
+		]);
+	Route::get('post/{post}/edit', [
+		'uses' => 'PostController@edit',
+		'middleware' => ['role:employer']
+		]);
+	Route::patch('post/{post}/update', [
+		'uses' => 'PostController@update',
+		'middleware' => ['role:employer']
+		]);
+	Route::post('post/{post}/delete', [
+		'uses' => 'PostController@update',
+		'middleware' => ['role:employer']
+		]);
+	Route::get('admin/post/manage', [
+		'uses' => 'PostController@viewManagePage',
+		'middleware' => ['role:admin']
+		]);
+	Route::get('admin/post/manage/{post}/edit', [
+		'uses' => 'PostController@editFromManage',
+		'middleware' => ['role:admin']
+		]);
+	Route::patch('admin/post/manage/{post}/update', [
+		'uses' => 'PostController@updateFromManage',
+		'middleware' => ['role:admin']
+		]);
+	Route::post('admin/post/manage/{post}/delete', [
+		'uses' => 'PostController@deleteFromManage',
+		'middleware' => ['role:admin']
+		]);
+
+	Route::post('comment/{post}/new', 'CommentController@store');
+	Route::get('admin/comment/manage/', [
+		'uses' => 'CommentController@manage',
+		'middleware' => ['role:admin']
+		]);
+	Route::post('admin/comment/manage/{comment}/delete', [
+		'uses' => 'CommentController@delete',
+		'middleware' => ['role:admin']
+		]);
+});
 

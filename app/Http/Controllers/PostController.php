@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Session;
 use App\Post;
+use App\Role;
+use App\User;
 use App\Category;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -16,7 +19,7 @@ class PostController extends Controller
 	 */
     public function list()
     {
-    	$posts = Post::all();
+    	$posts = Post::paginate(10);
     	return view('post.index', compact('posts'));
     }
 
@@ -50,11 +53,12 @@ class PostController extends Controller
     {
     	$this->validate($request, [
     		'title' => 'required|min:10',
+            'category_id' => 'required',
     		'content' => 'required|min:30'
     	]);
 
     	$post = new Post($request->all());
-    	$post->user_id = 1;
+    	$post->user_id = Auth::user()->id;
     	$post->save();
 
     	Session::flash('message', 'Your post has published successfully.');
@@ -68,8 +72,18 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-    	$categories = Category::all();
-    	return view('post.edit', compact('post', 'categories'));
+        if (Auth::user()->id == $post->user_id) {
+            $categories = Category::all();
+            return view('post.edit', compact('post', 'categories'));
+        }
+        else {
+            return view('errors.403');
+        }
+    }
+    public function editFromManage(Post $post)
+    {
+        $categories = Category::all();
+        return view('admin.editPost', compact('post', 'categories'));
     }
 
     /**
@@ -80,10 +94,22 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-    	$post->update($request->all());
+        if (Auth::user()->id == $post->user_id) {
+        	$post->update($request->all());
 
-    	Session::flash('message', 'Your post has been updated successfully.');
-    	return back();
+        	Session::flash('message', 'Your post has been updated successfully.');
+        	return back();
+        }
+        else {
+            return view('errors.403');
+        }
+    }
+    public function updateFromManage(Request $request, Post $post)
+    {
+        $post->update($request->all());
+
+        Session::flash('message', 'Your post has been updated successfully.');
+        return back();
     }
 
     /**
@@ -93,9 +119,14 @@ class PostController extends Controller
      */
     public function delete(Post $post)
     {
-    	Post::destroy($post->id);
-        Session::flash('message', 'Post deleted successfully.');
-    	return redirect('/posts');
+        if (Auth::user()->id == $post->user_id) {
+        	Post::destroy($post->id);
+            Session::flash('message', 'Post deleted successfully.');
+        	return redirect('/posts');
+        }
+        else {
+            return view('errors.403');
+        }
     }
     public function deleteFromManage(Post $post)
     {
@@ -110,7 +141,44 @@ class PostController extends Controller
      */
     public function viewManagePage()
     {
-        $posts = Post::all()->load('user', 'category');
-        return view('post.manage', compact('posts'));
+        $posts = Post::paginate(10);
+        return view('admin.postManage', compact('posts'));
+    }
+
+    public function viewAllUserPosts(User $user)
+    {
+        $user->load('posts');
+        return view('user.allposts', compact('user'));
+    }
+
+    public function search(Request $request)
+    {
+        $this->validate($request, [
+            'query' => 'required|min:3',
+            'category_id' => 'required',
+        ]);
+        $query = $request->input('query');
+
+        if ($request->input('location') == '' && $request->input('category_id') != 'all') {
+            $results = Post::where('category_id', $request->input('category_id'))
+                    ->search($query)
+                    ->paginate('10');
+        } else if ($request->input('location') == '' && $request->input('category_id') == 'all') {
+            $results = Post::search($query)
+                    ->paginate('10');
+        } else if ($request->input('location') != '' && $request->input('category_id') != 'all') {
+            $results = Post::where([
+                        ['category_id', $request->input('category_id')],
+                        ['location', $request->input('location')]
+                    ])
+                    ->search($query)
+                    ->paginate('10');
+        } else if ($request->input('location') != '' && $request->input('category_id') == 'all') {
+            $results = Post::where('location', $request->input('location'))
+                    ->search($query)
+                    ->paginate('10');
+        }
+
+        return view('post.search', compact('results', 'query'));
     }
 }

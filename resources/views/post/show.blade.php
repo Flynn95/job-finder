@@ -8,7 +8,7 @@
 	<div class="container">
 		<!-- Post header section -->
 		<h1>{{ $post->title }} <small style="font-size: 50%; ">published by {{ $post->user->name }}</small></h1>
-		<p>Published {{ $post->created_at->diffForHumans() }}, updated {{ $post->updated_at->diffForHumans() }}</p>
+		<p>In <strong>{{ $post->category->name }}</strong>, <i>published {{ $post->created_at->diffForHumans() }}, updated {{ $post->updated_at->diffForHumans() }}</i> | Location: {{ $post->location }}</p>
 		<h4><small><a href="/posts">&larr; back to jobs list</a></small></h4>
 		<hr>
 			<!-- Contents section -->
