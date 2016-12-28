@@ -1,7 +1,17 @@
 # Job-Finder.net
 
-An useless website that can find you a fake job.
+A rushed Uni project.
 
-Nothing else.
+## Installation guide:
 
-Am I blabbering something? Nah, you're just imagining things.
+'''bash
+git clone https://github.com/Flynn95/job-finder.git
+
+cd job-finder
+
+composer install
+
+php artisan key:generate
+
+php artisan migrate --seed
+'''
