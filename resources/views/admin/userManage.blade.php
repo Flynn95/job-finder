@@ -1,7 +1,36 @@
 @extends('layout')
 
 @section('header')
-	<title>User manage - Job-Finder.net</title>
+	<title>Admin Panel - User manage</title>
+	<style type="text/css">
+		body { padding-top: 70px; }
+	</style>
+@endsection
+
+@section('navigator')
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+	    	<div class="navbar-header">
+		      <a class="navbar-brand" href="/">Job-Finder.net</a>
+		    </div>
+		    <ul class="nav navbar-nav">
+		      <li><a href="/">Home</a></li>
+		      <li><a href="/posts">All Jobs</a></li>
+		      <li><a href="/categories">Categories</a></li>
+		    </ul>
+		    <ul class="nav navbar-nav navbar-right">
+	            <li class="dropdown">
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+	                    <span class="glyphicon glyphicon-user" style="margin-right: 5px;"></span> {{ Auth::user()->name }} <span class="caret"></span>
+	                </a>
+
+		            <ul class="dropdown-menu" role="menu">
+		                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+		            </ul>
+	            </li>
+        	</ul>
+		</div>
+	</nav>
 @endsection
 
 @section('content')
@@ -15,7 +44,7 @@
 		<div class="row">
 			<div class="col-sm-3">
 				<h4>Navigation</h4>
-				<ul class="nav nav-pills nav-stacked">
+				<ul class="nav nav-pills nav-stacked" id="adminNav">
 			        <li><a href="/admin">Summary</a></li>
 			        <li><a href="/admin/post/manage">Post Manage</a></li>
 			        <li class="active"><a href="/admin/user/manage">User Manage</a></li>
