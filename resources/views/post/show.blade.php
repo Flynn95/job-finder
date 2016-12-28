@@ -14,15 +14,23 @@
               <a class="navbar-brand" href="/">Job-Finder.net</a>
             </div>
             <ul class="nav navbar-nav">
-              <li><a href="/">Home</a></li>
-              <li><a href="/posts">All Jobs</a></li>
-              <li><a href="/categories">Categories</a></li>
+              	<li><a href="/">Home</a></li>
+              	<li><a href="/posts">All Jobs</a></li>
+              	<li><a href="/categories">Categories</a></li>
+              	@if (Auth::check())
+	            	@if (Auth::user()->roles[0]->name == 'employer')
+	                    <li><a href="/post/create">Create Job Post</a></li>
+	              	@endif
+	            @endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
             @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
+                    <li><a href="{{ url('/login') }}">Login</a></li>
+                    <li><a href="{{ url('/register') }}">Register</a></li>
             @else
+                @if (Auth::user()->roles[0]->name == 'admin')
+                    <li><button class="btn btn-danger navbar-btn" onclick="window.location.href='/admin'">Admin Panel</button></li>
+                @endif
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         <span class="glyphicon glyphicon-user" style="margin-right: 5px;"></span> {{ Auth::user()->name }} <span class="caret"></span>
@@ -69,15 +77,16 @@
 				</ul>
 			</div>
 		@endif
-
-		<form method="POST" action="/comment/{{ $post->id }}/new">
-			<div class="form-group">
-				<textarea class="form-control" name="content" style="min-height: 80px; ">{{ old('content') }}</textarea>
-			</div>
-			<div class="form-group">
-				<button type="submit" class="form-control btn btn-primary">Post your comment</button>
-			</div>
-			{{ csrf_field() }}
-		</form>
+		@if (Auth::check())
+			<form method="POST" action="/comment/{{ $post->id }}/new">
+				<div class="form-group">
+					<textarea class="form-control" name="content" style="min-height: 80px; ">{{ old('content') }}</textarea>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="form-control btn btn-primary">Post your comment</button>
+				</div>
+				{{ csrf_field() }}
+			</form>
+		@endif
 	</div>
 @endsection

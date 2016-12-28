@@ -15,12 +15,18 @@
               <a class="navbar-brand" href="/">Job-Finder.net</a>
             </div>
             <ul class="nav navbar-nav">
-              <li><a href="/">Home</a></li>
-              <li><a href="/posts">All Jobs</a></li>
-              <li><a href="/categories">Categories</a></li>
+              	<li><a href="/">Home</a></li>
+              	<li><a href="/posts">All Jobs</a></li>
+              	<li><a href="/categories">Categories</a></li>
+            	@if (Auth::user()->roles[0]->name == 'employer')
+                    <li><a href="/post/create">Create Job Post</a></li>
+              	@endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
+                @if (Auth::user()->roles[0]->name == 'admin')
+                    <li><button class="btn btn-danger navbar-btn" onclick="window.location.href='/admin'">Admin Panel</button></li>
+                @endif
+                    <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         <span class="glyphicon glyphicon-user" style="margin-right: 5px;"></span> {{ Auth::user()->name }} <span class="caret"></span>
                     </a>
@@ -38,7 +44,7 @@
 		<h1>
 			Create a new job post
 		</h1>
-		<h4><small><a href="/">&larr; back to homepage</a></small></h4>
+		<h4><small><a href="/">&larr; back to All posts</a></small></h4>
 		<hr>
 
 		@if(count($errors) > 0)
