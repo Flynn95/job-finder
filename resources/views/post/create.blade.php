@@ -12,7 +12,9 @@
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-              <a class="navbar-brand" href="/">Job-Finder.net</a>
+              	<a class="navbar-brand" href="/">
+              		Job-Finder.net
+              	</a>
             </div>
             <ul class="nav navbar-nav">
               	<li><a href="/">Home</a></li>
@@ -44,7 +46,7 @@
 		<h1>
 			Create a new job post
 		</h1>
-		<h4><small><a href="/">&larr; back to All posts</a></small></h4>
+		<h4><small><a href="/posts">&larr; back to All posts</a></small></h4>
 		<hr>
 
 		@if(count($errors) > 0)

@@ -24,9 +24,9 @@ Route::get('categories/{category}', 'CategoryController@postsListing');
 
 Route::auth();
 
-Route::get('/home', function () {
-	return view('home');
-});
+// Route::get('/home', function () {
+// 	return view('home');
+// });
 
 Route::group(['middleware' => ['auth']], function() {
 	Route::get('admin', [

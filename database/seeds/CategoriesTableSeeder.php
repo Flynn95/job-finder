@@ -12,6 +12,9 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         $data = [[
+	            'name' => 'General'
+	        ],
+        	[
 	            'name' => 'Architecture and Engineering'
 	        ],
 	        [

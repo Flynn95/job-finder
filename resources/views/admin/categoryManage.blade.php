@@ -67,7 +67,7 @@
 		<h3>List of all current category:</h3>
 		<ul class="list-group">
 		    @foreach($categories as $category)
-		    	<li class="list-group-item">{{ $category->name }} <p style="display: inline;" class="pull-right"><a href="#editModal" data-toggle="modal" data-cat-id="{{ $category->id }}" data-cat-name="{{ $category->name }}">Edit</a> | <a href="#delModal" data-toggle="modal" data-cat-id="{{ $category->id }}" data-cat-name="{{ $category->name }}">Delete</a></p></li>
+		    	<li class="list-group-item">{{ $category->name }} <p style="display: inline; padding-left: 10px;" class="pull-right"><a href="#editModal" data-toggle="modal" data-cat-id="{{ $category->id }}" data-cat-name="{{ $category->name }}">Edit</a> | <a href="#delModal" data-toggle="modal" data-cat-id="{{ $category->id }}" data-cat-name="{{ $category->name }}">Delete</a></p><span class="badge">{{ count($category->posts) }}</span></li>
 		    @endforeach
 		</ul>
 

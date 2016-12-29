@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('content');
-            $table->text('location');
+            $table->string('location');
             $table->integer('category_id')
                 ->references('id')->on('categories');
             $table->integer('user_id')

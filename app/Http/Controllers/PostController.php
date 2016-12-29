@@ -6,6 +6,7 @@ use Session;
 use App\Post;
 use App\Role;
 use App\User;
+use App\Comment;
 use App\Category;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -120,6 +121,13 @@ class PostController extends Controller
     public function delete(Post $post)
     {
         if (Auth::user()->id == $post->user_id) {
+            $comments = $post->comments;
+            if (count($comments) > 0) {
+                foreach ($comments as $comment) {
+                    Comment::destroy($comment->id);
+                }
+            }
+
         	Post::destroy($post->id);
             Session::flash('message', 'Post deleted successfully.');
         	return redirect('/posts');
@@ -130,6 +138,11 @@ class PostController extends Controller
     }
     public function deleteFromManage(Post $post)
     {
+        $comments = $post->comments;
+        foreach ($comments as $comment) {
+            Comment::destroy($comment->id);
+        };
+
         Post::destroy($post->id);
         Session::flash('message', 'Post deleted successfully.');
         return back();

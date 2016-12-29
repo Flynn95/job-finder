@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\Role;
 use App\User;
+use App\Comment;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +39,20 @@ class UserController extends Controller
 
     public function delete(User $user)
     {
+    	$posts = $user->posts;
+    	$comments = $user->comments;
+
+    	if (count($posts) > 0) {
+    		foreach ($posts as $post) {
+    			Post::destroy($post->id);
+    		}
+    	}
+    	if (count($comments) > 0) {
+	    	foreach ($comments as $comment) {
+	    		Comment::destroy($comment->id);
+	    	}
+	    }
+
     	User::destroy($user->id);
     	Session::flash('message', 'User deleted successfully.');
 		return back();

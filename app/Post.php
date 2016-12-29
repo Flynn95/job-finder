@@ -27,7 +27,7 @@ class Post extends Model
         'columns' => [
             'title' => 10,
             'location' => 5,
-            'content' => 1,
+            'content' => 5,
         ]
     ];
 

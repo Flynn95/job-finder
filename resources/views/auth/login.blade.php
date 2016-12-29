@@ -80,11 +80,11 @@
             </div>
             <div class="form-group">
                     <div class="col-sm-10 col-sm-offset-2">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="form-control btn btn-primary">
                             <i class="fa fa-btn fa-sign-in"></i> Login
                         </button>
 
-                    <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
+                    {{-- <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a> --}}
                 </div>
             </div>
             {{ csrf_field() }}
